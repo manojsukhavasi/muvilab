@@ -36,9 +36,18 @@ annotator = Annotator([
         clips_folder, sort_files_list=True, N_show_approx=100, screen_ratio=16/9, 
         image_resize=1, loop_duration=None, annotation_file='demo_labels.json')
 
-# Split the video into clips
-print('Generating clips from the video...')
-annotator.video_to_clips(youtube_filename, clips_folder, clip_length=90, overlap=0, resize=0.5)
+bClippingRequired = True
+try:
+    filesArr = os.listdir(clips_folder)
+    if len(filesArr) > 0:
+        bClippingRequired = False
+except:
+    print("no files")
+
+if bClippingRequired:
+    # Split the video into clips
+    print('Generating clips from the video...')
+    annotator.video_to_clips(youtube_filename, clips_folder, clip_length=90, overlap=0, resize=0.5)
 
 # Run the annotator
 annotator.main()

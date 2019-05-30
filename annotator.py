@@ -88,8 +88,7 @@ class Annotator:
                 clip_frame_counter += 1
             else:
                 # Save the complete clip
-                print('\rClip %d complete (%.1f%%)' % (clip_counter,
-                      video_frame_counter/video_length*100), end=' ')
+                # print('\rClip %d complete (%.1f%%)' % (clip_counter, video_frame_counter/video_length*100), end=' ')
                 clip_cap.release()
                 clip_frame_counter = 0
                 clip_counter += 1
@@ -186,8 +185,11 @@ class Annotator:
             # Create the pagination
             self.N_pages = int(np.ceil(len(self.dataset)/(self.Nx*self.Ny)))
             self.pagination = [[] for _ in range(self.N_pages)]
+            print("Dataset<"+str(len(self.dataset))+"> NPages<"+str(self.N_pages)+">")
             for vid in range(len(self.dataset)):
                 p = int(np.floor(vid/(self.Nx*self.Ny)))
+                if p == self.N_pages:
+                    break
                 self.pagination[p].append(vid)
 
 
@@ -729,7 +731,7 @@ class Annotator:
             # Update the rectangles
             self.update_rectangles()
             
-            print('\rShowing page %d/%d' % (self.current_page+1, self.N_pages), end=' ')
+            # print('\rShowing page %d/%d' % (self.current_page+1, self.N_pages), end=' ')
             
             # GUI loop
             run_this_page = True
