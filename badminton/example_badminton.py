@@ -37,24 +37,28 @@ def run_tool(clips_folder, video_file, json_file):
     if bClippingRequired:
         # Split the video into clips
         print('Generating clips from the video...')
-        annotator.video_to_clips(youtube_filename, clips_folder, clip_length=90, overlap=0, resize=0.5)
+        annotator.video_to_clips(youtube_filename, clips_folder, clip_length=60, overlap=0, resize=0.5)
 
     # Run the annotator
     annotator.main()
 
 """
 Example Usage: 
-python badminton/example_badminton.py -c ./badminton/baddy -f ./badminton/baddy.mp4 -j ./badminton/sample.json
+python badminton/example_badminton.py -f ./badminton/baddy.mp4
 
 """
 
 if __name__ =="__main__":
-    parser = argparse.ArgumentParser(description='sample')
-    parser.add_argument('-c', '--clips_folder', help='Folder where clips are generated')
-    parser.add_argument('-f', '--file_video', help='Video filename')
-    parser.add_argument('-j', '--json_file', help='json filename')
+    parser = argparse.ArgumentParser(description='sample')    
+    parser.add_argument('-f', '--file_video', help='Video filename')    
 
     args = parser.parse_args()
 
-    if args.clips_folder and args.file_video and args.json_file:
-        run_tool(args.clips_folder, args.file_video, args.json_file)
+    videoFileName = args.file_video.split("/")[-1].split(".")[0]
+    clips_folder = os.path.dirname(args.file_video) + "/clips_" + videoFileName
+    json_file = args.file_video.replace("mp4", "json")
+
+    
+
+    if args.file_video:
+        run_tool(clips_folder, args.file_video, json_file)
