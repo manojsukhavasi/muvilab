@@ -1,24 +1,33 @@
 # -*- coding: utf-8 -*-
-
-import os
-import sys
+import os, sys, argparse
+from shutil import copyfile
 sys.path.append('../')
-from pytube import YouTube
 from annotator import Annotator
-import argparse
 
+def run_tool(video_file, labels_json):
 
+    videoFileName = video_file.split("/")[-1].split(".")[0]
+    
+    #output_folder = f'{os.getcwd()}/output/{videoFileName}/'
+    output_folder = f'./output/{videoFileName}/'
+    if not os.path.exists(output_folder):
+        os.mkdir(output_folder)
 
-def run_tool(clips_folder, video_file, json_file):
+    clips_folder = output_folder+'clips/'
+    json_file = f'{output_folder}{videoFileName}.json'
+    ref_labels = f'{output_folder}{videoFileName}_ref_labels.json'
+
+    #Copy the reference json file in to the folder
+    copyfile(labels_json, ref_labels)
 
     # Set up some folders
     clips_folder = clips_folder
-    youtube_filename = video_file
 
     # Create the folders
     if not os.path.exists(clips_folder):
         os.mkdir(clips_folder)
         
+    print(json_file)
     # Initialise the annotator
     annotator = Annotator([
             {'name': 'play', 'color': (0, 255, 0)},
@@ -37,7 +46,7 @@ def run_tool(clips_folder, video_file, json_file):
     if bClippingRequired:
         # Split the video into clips
         print('Generating clips from the video...')
-        annotator.video_to_clips(youtube_filename, clips_folder, clip_length=60, overlap=0, resize=0.5)
+        annotator.video_to_clips(video_file, clips_folder, clip_length=60, overlap=0, resize=0.5)
 
     # Run the annotator
     annotator.main()
@@ -50,15 +59,12 @@ python badminton/example_badminton.py -f ./badminton/baddy.mp4
 
 if __name__ =="__main__":
     parser = argparse.ArgumentParser(description='sample')    
-    parser.add_argument('-f', '--file_video', help='Video filename')    
+    parser.add_argument('-f', '--file_video', help='Video filename')
+    parser.add_argument('-l', '--labels_json', help='Json with the required labels')
 
     args = parser.parse_args()
 
-    videoFileName = args.file_video.split("/")[-1].split(".")[0]
-    clips_folder = os.path.dirname(args.file_video) + "/clips_" + videoFileName
-    json_file = args.file_video.replace("mp4", "json")
-
-    
-
-    if args.file_video:
-        run_tool(clips_folder, args.file_video, json_file)
+    if args.file_video and args.labels_json:
+        run_tool(args.file_video, args.labels_json)
+    else:
+        print('Please input all the arguments required.')
