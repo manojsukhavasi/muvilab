@@ -11,7 +11,7 @@ def run_tool(video_file, labels):
     out_folder = './output/'
     if not os.path.exists(out_folder):
         os.mkdir(out_folder)
-        
+
     output_folder = f'{out_folder}{videoFileName}/'
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
@@ -77,7 +77,7 @@ def run_tool(video_file, labels):
 
 """
 Example Usage: 
-python badminton/example_badminton.py -f ./badminton/baddy.mp4
+python main.py -f ./badminton/baddy.mp4 -l examples/sample.txt
 
 """
 
