@@ -8,8 +8,11 @@ def run_tool(video_file, labels):
 
     videoFileName = video_file.split("/")[-1].split(".")[0]
     
-    #output_folder = f'{os.getcwd()}/output/{videoFileName}/'
-    output_folder = f'./output/{videoFileName}/'
+    out_folder = './output/'
+    if not os.path.exists(out_folder):
+        os.mkdir(out_folder)
+        
+    output_folder = f'{out_folder}{videoFileName}/'
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
 
