@@ -445,8 +445,8 @@ class Annotator:
         for anno in annotations:
             # If the annotation has a relative path, it is relative to the 
             # annotation file's folder
-            if not os.path.isabs(anno['video']):
-                anno['video'] = os.path.join(os.path.dirname(self.annotation_file), anno['video'])
+            #if not os.path.isabs(anno['video']):
+            #    anno['video'] = os.path.join(os.path.dirname(self.annotation_file), anno['video'])
             
             # Resolve path to allow future string comparison
             anno['video'] = os.path.realpath(anno['video'])
