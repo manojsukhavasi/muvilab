@@ -1,0 +1,5 @@
+forehand
+backhand
+other-shot
+no-play
+skip
